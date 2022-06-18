@@ -1,0 +1,31 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp56
+{
+    class Kitablar
+    {
+        public string Name { get; set; }
+        public string Janr { get; set; }
+        public int Id { get;  }
+        public static int _id;
+
+        public List<Muellif> muellif;
+        public Kitablar()
+        {
+
+        }
+        public Kitablar(string name,string janr):this()
+        {
+            Name = name;
+            Janr = janr;
+            Id = ++_id;
+            muellif = new List<Muellif>();
+
+
+        }
+    }
+}

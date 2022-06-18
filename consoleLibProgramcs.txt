@@ -1,0 +1,163 @@
+using System;
+
+namespace ConsoleApp56
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Library library = new Library("kitabyurdu");
+            while (true)
+            {
+
+
+                Console.WriteLine("1.Kitabxanaya isci elave et ");
+                Console.WriteLine("2.Muellif elave et ");
+                Console.WriteLine("3.Kitabxanaya kitab elave et ");
+                Console.WriteLine("4.Kitabxanadan isci sil ");
+                Console.WriteLine("5.Kitabxanadan kitab sil ");
+
+                string reqem = Console.ReadLine();
+                switch (reqem)
+                {
+                    case "1":
+                        Console.WriteLine("Iscinin adini qeyd edin");
+                        string namei = Console.ReadLine();
+                        Console.WriteLine("Iscinin soyadini qeyd edin");
+                        string surnamei = Console.ReadLine();
+                        Console.WriteLine("Iscinin yasini qeyd edin");
+                    AGEI:
+                        string agei = Console.ReadLine();
+                        bool agestr = int.TryParse(agei, out int age);
+                        if (!agestr)
+                        {
+                            Console.WriteLine("reqemleri  duzgun daxil edin");
+                            goto AGEI;
+                        }
+                        Isciler isciler = new Isciler(namei, surnamei, age);
+                        library.isciler.Add(isciler);
+
+                        break;
+                    case "2":
+                        Console.WriteLine("Muellifin adini qeyd edin ");
+                        string namem = Console.ReadLine();
+                        Console.WriteLine("muellifin soyadini daxil edin");
+                        string surnamem = Console.ReadLine();
+                        Console.WriteLine("muellifin yasini daxil edin ");
+                    AGEM:
+                        string agemstr = Console.ReadLine();
+                        bool isagem = int.TryParse(agemstr, out int agem);
+                        if (!isagem)
+                        {
+                            Console.WriteLine("reqemleri duzgun daxil edin");
+                            goto AGEM;
+                        }
+                        Muellif muellif = new Muellif(namem, surnamem, agem);
+                        library.muellif.Add(muellif);
+
+                        break;
+                    case "3":
+                        Console.WriteLine("kitabin adini qeyd edin ");
+                        string namek = Console.ReadLine();
+                        Console.WriteLine("kitabin janrini qeyd edin ");
+                        string janrk = Console.ReadLine();
+                        Kitablar kitablar = new Kitablar(namek, janrk);
+                        foreach (var item in library.muellif)
+                        {
+                            Console.WriteLine($"Id--{item.Id}  Ad--{item.Name}");
+                        }
+                        Console.WriteLine("muellifleri secmek ucun id daxil edin");
+                        ID:
+                        string idm = Console.ReadLine();
+                        string[] idm2 = idm.Split(",");
+                        foreach (var item in idm2)
+                        {
+                            bool isidm = int.TryParse(idm, out int idmm);
+                            if (!isidm)
+                            {
+                                Console.WriteLine("id ni duzgun daxil edin");
+                                goto ID;
+                            }
+                            foreach (var item2 in library.muellif)
+
+                            {
+                                if (item2.Id == idmm)
+                                {
+                                    kitablar.muellif.Add(item2);
+                                    item2.kitablar.Add(kitablar);
+                                }
+                            }
+                        }
+
+                        library.kitablar.Add(kitablar);
+                        Console.WriteLine($"{namek}adli kitan yaradildi");
+
+                        break;
+                    case "4":
+
+                        foreach (var item in library.isciler)
+                        {
+                            Console.WriteLine($"{item.Id}  {item.Name}  {item.Surname}");
+                        }
+                        Console.WriteLine("silmek istediyiniz iscinin Id-sni qeyd edin ");
+                        IDD:
+                        string iscininIdsi = Console.ReadLine();
+                        bool isciid = int.TryParse(iscininIdsi, out int id);
+                        if (!isciid)
+                        {
+                            Console.WriteLine("duzgun daxil edin");
+                            goto IDD;
+                        }
+                        foreach (var item in library.isciler)
+                        {
+                            if (item.Id == id)
+                            {
+                                library.isciler.Remove(item);
+                                Console.WriteLine($"{ item.Name} - isci silindi");
+                                break;
+                            }
+
+                        }                        
+
+                        break;
+                    case "5":
+                        foreach (var item in library.kitablar)
+                        {
+                            Console.WriteLine($"{item.Id}  {item.Name} ");
+                        }
+
+                        Console.WriteLine("silmek istediyiniz kitabin id sini qeyd edin");
+                        IDDK:
+                        string idkitab = Console.ReadLine();
+                        bool idkit = int.TryParse(idkitab, out int idk);
+
+                        if (!idkit)
+                        {
+                            Console.WriteLine("duzgun id daxil edin");
+                            goto IDDK;
+                        }
+                        foreach (var item in library.kitablar)
+                        {
+                            if (item.Id == idk)
+                            {
+                                foreach (var item3 in library.muellif)
+                                {
+                                    item3.kitablar.Remove(item);
+                                }
+                                library.kitablar.Remove(item);
+                                Console.WriteLine($"{item.Name} adli kitab silinmisdir");
+                                break;
+
+                            }
+                        }
+
+
+
+                        break;
+
+
+                }
+            }
+        }
+    }
+}
